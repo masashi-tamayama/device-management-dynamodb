@@ -1,36 +1,40 @@
 import axios from 'axios';
-import { Device, DeviceCreateInput, DeviceUpdateInput } from '../types/device';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-const API_PATH = '/api/v1/devices';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+
+export interface Device {
+  id?: string;
+  name: string;
+  maker: string;
+}
 
 export const deviceApi = {
-    // デバイス一覧の取得
-    getDevices: async (): Promise<Device[]> => {
-        const response = await axios.get(`${API_BASE_URL}${API_PATH}/`);
-        return response.data;
-    },
+  // デバイス一覧の取得
+  getAllDevices: async (): Promise<Device[]> => {
+    const response = await axios.get(`${API_BASE_URL}/devices`);
+    return response.data;
+  },
 
-    // 特定のデバイスの取得
-    getDevice: async (id: string): Promise<Device> => {
-        const response = await axios.get(`${API_BASE_URL}${API_PATH}/${id}`);
-        return response.data;
-    },
+  // デバイスの取得
+  getDevice: async (id: string): Promise<Device> => {
+    const response = await axios.get(`${API_BASE_URL}/devices/${id}`);
+    return response.data;
+  },
 
-    // デバイスの作成
-    createDevice: async (device: DeviceCreateInput): Promise<Device> => {
-        const response = await axios.post(`${API_BASE_URL}${API_PATH}/`, device);
-        return response.data;
-    },
+  // デバイスの作成
+  createDevice: async (device: Device): Promise<Device> => {
+    const response = await axios.post(`${API_BASE_URL}/devices`, device);
+    return response.data;
+  },
 
-    // デバイスの更新
-    updateDevice: async (id: string, device: DeviceUpdateInput): Promise<Device> => {
-        const response = await axios.put(`${API_BASE_URL}${API_PATH}/${id}`, device);
-        return response.data;
-    },
+  // デバイスの更新
+  updateDevice: async (id: string, device: Device): Promise<Device> => {
+    const response = await axios.put(`${API_BASE_URL}/devices/${id}`, device);
+    return response.data;
+  },
 
-    // デバイスの削除
-    deleteDevice: async (id: string): Promise<void> => {
-        await axios.delete(`${API_BASE_URL}${API_PATH}/${id}`);
-    }
+  // デバイスの削除
+  deleteDevice: async (id: string): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/devices/${id}`);
+  }
 }; 

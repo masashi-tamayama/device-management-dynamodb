@@ -1,21 +1,23 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { DeviceList } from './components/DeviceList/DeviceList';
-import { DeviceForm } from './components/DeviceForm/DeviceForm';
+import DeviceIndex from './pages/DeviceIndex';
+import DeviceNew from './pages/DeviceNew';
+import DeviceEdit from './pages/DeviceEdit';
 import './App.css';
 
-function App() {
+const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
         <Routes>
           <Route path="/" element={<Navigate to="/devices" replace />} />
-          <Route path="/devices" element={<DeviceList />} />
-          <Route path="/devices/create" element={<DeviceForm />} />
-          <Route path="/devices/edit/:id" element={<DeviceForm />} />
+          <Route path="/devices" element={<DeviceIndex />} />
+          <Route path="/devices/create" element={<DeviceNew />} />
+          <Route path="/devices/:id/edit" element={<DeviceEdit />} />
         </Routes>
       </div>
     </Router>
   );
-}
+};
 
 export default App;
