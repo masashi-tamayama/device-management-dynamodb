@@ -19,7 +19,12 @@ class DynamoDBInterface(DatabaseInterface):
     def __init__(self):
         """DynamoDBテーブルのリソースを初期化"""
         try:
-            self.dynamodb = boto3.resource('dynamodb', region_name=os.getenv('AWS_REGION'))
+            self.dynamodb = boto3.resource('dynamodb', 
+                endpoint_url=os.getenv('DYNAMODB_ENDPOINT_URL'),
+                region_name=os.getenv('AWS_REGION'),
+                aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+                aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY')
+            )
             self.table = self.dynamodb.Table(os.getenv('DYNAMODB_TABLE_NAME'))
             logger.info(f"DynamoDBテーブル {os.getenv('DYNAMODB_TABLE_NAME')} に接続しました")
         except ClientError as e:
@@ -88,7 +93,7 @@ class DynamoDBInterface(DatabaseInterface):
             logger.error(f"デバイス削除エラー: {e.response['Error']['Message']}")
             raise
 
-    def list_devices(self) -> List[Dict]:
+    def get_all_devices(self) -> List[Dict]:
         """全デバイスを取得する"""
         try:
             response = self.table.scan()
