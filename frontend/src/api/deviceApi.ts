@@ -6,6 +6,8 @@ export interface Device {
   id?: string;
   name: string;
   maker: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export const deviceApi = {

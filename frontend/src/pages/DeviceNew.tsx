@@ -14,7 +14,9 @@ const DeviceNew: React.FC = () => {
     e.preventDefault();
     try {
       await deviceApi.createDevice(device);
-      navigate('/devices');
+      // 登録成功後、一覧画面に遷移する前に少し待つ
+      await new Promise(resolve => setTimeout(resolve, 500));
+      navigate('/devices', { state: { refresh: true } });
     } catch (err) {
       setError('デバイスの作成に失敗しました。');
       console.error('Error creating device:', err);

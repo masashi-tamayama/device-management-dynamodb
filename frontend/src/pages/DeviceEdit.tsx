@@ -30,7 +30,8 @@ const DeviceEdit: React.FC = () => {
     if (!id) return;
     try {
       await deviceApi.updateDevice(id, device);
-      navigate('/devices');
+      await new Promise(resolve => setTimeout(resolve, 500));
+      navigate('/devices', { state: { refresh: true } });
     } catch (err) {
       setError('デバイスの更新に失敗しました。');
       console.error('Error updating device:', err);

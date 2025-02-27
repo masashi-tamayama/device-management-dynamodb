@@ -17,6 +17,30 @@ services:
     networks:
       - app-network
 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: device-management-backend
+    volumes:
+      - ./backend:/app
+      - ./backend/lambda/devices/.env:/app/lambda/devices/.env
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=lambda/devices/app.py
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - PYTHONPATH=/app
+      - DYNAMODB_ENDPOINT_URL=http://dynamodb-local:8000
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_REGION=ap-northeast-1
+    depends_on:
+      - dynamodb-local
+    networks:
+      - app-network
+
   frontend:
     build:
       context: ./frontend
@@ -31,7 +55,7 @@ services:
       - NODE_ENV=development
       - VITE_API_BASE_URL=http://localhost:5000
     depends_on:
-      - dynamodb-local
+      - backend
     networks:
       - app-network
 
