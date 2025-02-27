@@ -1,28 +1,19 @@
 {
-    "CallerReference": "cli-1739882289-217072",
+    "CallerReference": "device-mgmt-dynamodb-frontend",
     "Aliases": {
         "Quantity": 0
     },
+    "Comment": "Device Management DynamoDB Frontend Distribution",
     "DefaultRootObject": "index.html",
     "Origins": {
         "Quantity": 1,
         "Items": [
             {
-                "Id": "device-mgmt-frontend-bucket",
-                "DomainName": "device-mgmt-frontend-bucket.s3.amazonaws.com",
-                "OriginPath": "",
-                "CustomHeaders": {
-                    "Quantity": 0
-                },
+                "Id": "device-mgmt-frontend-dynamodb-bucket",
+                "DomainName": "device-mgmt-frontend-dynamodb-bucket.s3.ap-northeast-1.amazonaws.com",
                 "S3OriginConfig": {
                     "OriginAccessIdentity": ""
-                },
-                "ConnectionAttempts": 3,
-                "ConnectionTimeout": 10,
-                "OriginShield": {
-                    "Enabled": false
-                },
-                "OriginAccessControlId": "E1JCQCLG0RPNWU"
+                }
             }
         ]
     },
@@ -30,7 +21,7 @@
         "Quantity": 0
     },
     "DefaultCacheBehavior": {
-        "TargetOriginId": "device-mgmt-frontend-bucket",
+        "TargetOriginId": "device-mgmt-frontend-dynamodb-bucket",
         "TrustedSigners": {
             "Enabled": false,
             "Quantity": 0
@@ -88,7 +79,6 @@
     "CustomErrorResponses": {
         "Quantity": 0
     },
-    "Comment": "",
     "Logging": {
         "Enabled": false,
         "IncludeCookies": false,

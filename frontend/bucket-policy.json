@@ -2,16 +2,16 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "AllowCloudFrontServicePrincipal",
+            "Sid": "AllowCloudFrontAccess",
             "Effect": "Allow",
             "Principal": {
                 "Service": "cloudfront.amazonaws.com"
             },
             "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::device-mgmt-frontend-bucket/*",
+            "Resource": "arn:aws:s3:::device-mgmt-frontend-dynamodb-bucket/*",
             "Condition": {
                 "StringEquals": {
-                    "AWS:SourceArn": "arn:aws:cloudfront::881490109259:distribution/E1OJBU6FBKY6X"
+                    "AWS:SourceArn": "arn:aws:cloudfront::881490109259:distribution/E8UM6QL93YJ32"
                 }
             }
         }
