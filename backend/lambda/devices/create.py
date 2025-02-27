@@ -14,7 +14,7 @@ def handler(event, context):
         body = json.loads(event['body'])
         
         # 必須フィールドの検証
-        required_fields = ['name', 'manufacturer']
+        required_fields = ['name', 'maker']
         for field in required_fields:
             if field not in body:
                 return {
@@ -31,7 +31,7 @@ def handler(event, context):
         device_data = {
             'id': device_id,
             'name': body['name'],
-            'manufacturer': body['manufacturer']
+            'maker': body['maker']
         }
         
         # データベース操作

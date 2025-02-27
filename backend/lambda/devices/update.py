@@ -16,7 +16,7 @@ def handler(event, context):
         body = json.loads(event['body'])
         
         # 更新可能なフィールド
-        allowed_fields = ['name', 'manufacturer']
+        allowed_fields = ['name', 'maker']
         update_data = {k: v for k, v in body.items() if k in allowed_fields}
         
         if not update_data:

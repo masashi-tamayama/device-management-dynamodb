@@ -1,24 +1,44 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-// 仮のデータ（DynamoDBの構造に合わせて更新）
-const mockDevices = [
-  { 
-    id: '1', 
-    name: '温度センサー1', 
-    maker: 'センサー株式会社'
-  },
-  { 
-    id: '2', 
-    name: '監視カメラA', 
-    maker: 'カメラ工業'
-  }
-];
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { deviceApi, Device } from '../api/deviceApi';
+import Loading from '../components/common/Loading';
 
 const DeviceIndex: React.FC = () => {
+  const location = useLocation();
+  const [devices, setDevices] = useState<Device[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchDevices();
+  }, [location.state]);
+
+  const fetchDevices = async () => {
+    try {
+      setLoading(true);
+      const data = await deviceApi.getAllDevices();
+      // created_atで降順ソート（新しい順）
+      const sortedData = [...data].sort((a, b) => {
+        const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+        const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+        return dateB - dateA;
+      });
+      setDevices(sortedData);
+      setError(null);
+    } catch (err) {
+      setError('デバイス一覧の取得に失敗しました。');
+      console.error('Error fetching devices:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) return <Loading />;
+
   return (
     <div style={{ padding: '20px' }}>
       <h1>機器一覧</h1>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <div style={{ marginBottom: '20px' }}>
         <Link to="/devices/create" style={{ ...buttonStyle, backgroundColor: '#2196F3' }}>
           新規登録
@@ -34,7 +54,7 @@ const DeviceIndex: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {mockDevices.map(device => (
+          {devices.map(device => (
             <tr key={device.id}>
               <td style={tableCellStyle}>{device.id}</td>
               <td style={tableCellStyle}>{device.name}</td>

@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 import logging
 from typing import Dict, List, Optional
 from .db_interface import DatabaseInterface
+import uuid
+from datetime import datetime
 
 # ロガーの設定
 logger = logging.getLogger()
@@ -34,6 +36,15 @@ class DynamoDBInterface(DatabaseInterface):
     def create_device(self, device_data: Dict) -> Dict:
         """デバイスを作成する"""
         try:
+            now = datetime.utcnow().isoformat()
+            device_data['id'] = str(uuid.uuid4())
+            device_data['created_at'] = now
+            device_data['updated_at'] = now
+            
+            # manufacturerをmakerに変換
+            if 'manufacturer' in device_data:
+                device_data['maker'] = device_data.pop('manufacturer')
+            
             self.table.put_item(Item=device_data)
             logger.info(f"デバイスを作成しました: {device_data['id']}")
             return device_data
@@ -59,11 +70,20 @@ class DynamoDBInterface(DatabaseInterface):
         """デバイスを更新する"""
         update_expression = "SET "
         expression_attribute_values = {}
+        expression_attribute_names = {}
+        
+        # manufacturerをmakerに変換
+        if 'manufacturer' in update_data:
+            update_data['maker'] = update_data.pop('manufacturer')
+        
+        # 更新日時を設定
+        update_data['updated_at'] = datetime.utcnow().isoformat()
         
         for key, value in update_data.items():
             if key != 'id':  # idは更新しない
                 update_expression += f"#{key} = :{key}, "
                 expression_attribute_values[f":{key}"] = value
+                expression_attribute_names[f"#{key}"] = key
         
         # 末尾のカンマとスペースを削除
         update_expression = update_expression[:-2]
@@ -73,7 +93,7 @@ class DynamoDBInterface(DatabaseInterface):
                 Key={'id': device_id},
                 UpdateExpression=update_expression,
                 ExpressionAttributeValues=expression_attribute_values,
-                ExpressionAttributeNames={f"#{k}": k for k in update_data.keys() if k != 'id'},
+                ExpressionAttributeNames=expression_attribute_names,
                 ReturnValues="ALL_NEW"
             )
             updated_device = response.get('Attributes')

@@ -7,7 +7,7 @@ CORS(app)
 
 db = get_db_interface()
 
-@app.route('/api/devices', methods=['GET'])
+@app.route('/devices', methods=['GET'])
 def get_devices():
     try:
         devices = db.get_all_devices()
@@ -15,7 +15,7 @@ def get_devices():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/devices/<device_id>', methods=['GET'])
+@app.route('/devices/<device_id>', methods=['GET'])
 def get_device(device_id):
     try:
         device = db.get_device(device_id)
@@ -25,7 +25,7 @@ def get_device(device_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/devices', methods=['POST'])
+@app.route('/devices', methods=['POST'])
 def create_device():
     try:
         device_data = request.json
@@ -34,7 +34,7 @@ def create_device():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/devices/<device_id>', methods=['PUT'])
+@app.route('/devices/<device_id>', methods=['PUT'])
 def update_device(device_id):
     try:
         device_data = request.json
@@ -45,7 +45,7 @@ def update_device(device_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/devices/<device_id>', methods=['DELETE'])
+@app.route('/devices/<device_id>', methods=['DELETE'])
 def delete_device(device_id):
     try:
         success = db.delete_device(device_id)
