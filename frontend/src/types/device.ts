@@ -1,17 +1,17 @@
 export interface Device {
-    id: string;
+    id?: string;
     name: string;
-    manufacturer: string;
-    created_at: string;
-    updated_at: string;
+    maker: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface DeviceCreateInput {
     name: string;
-    manufacturer: string;
+    maker: string;
 }
 
 export interface DeviceUpdateInput {
     name: string;
-    manufacturer: string;
+    maker: string;
 } 

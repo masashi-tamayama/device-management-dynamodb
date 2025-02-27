@@ -195,3 +195,9 @@ dist/
 
 # Lambda package directory
 backend/lambda/package/
+
+# Lambda deployment files
+function.zip
+package/
+backend/package/
+backend/function.zip

@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "AllowCloudFrontAccess",
+            "Sid": "AllowCloudFrontServicePrincipal",
             "Effect": "Allow",
             "Principal": {
                 "Service": "cloudfront.amazonaws.com"

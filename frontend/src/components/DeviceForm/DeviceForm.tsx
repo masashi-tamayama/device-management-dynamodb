@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Device, DeviceCreateInput, DeviceUpdateInput } from '../../types/device';
+import { DeviceCreateInput } from '../../types/device';
 import { deviceApi } from '../../api/deviceApi';
 
 export const DeviceForm: React.FC = () => {
@@ -8,7 +8,7 @@ export const DeviceForm: React.FC = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState<DeviceCreateInput>({
         name: '',
-        manufacturer: ''
+        maker: ''
     });
 
     useEffect(() => {
@@ -18,7 +18,7 @@ export const DeviceForm: React.FC = () => {
                     const device = await deviceApi.getDevice(id);
                     setFormData({
                         name: device.name,
-                        manufacturer: device.manufacturer
+                        maker: device.maker
                     });
                 } catch (error) {
                     console.error('デバイスの取得に失敗しました:', error);
@@ -34,7 +34,7 @@ export const DeviceForm: React.FC = () => {
         e.preventDefault();
         try {
             if (id) {
-                await deviceApi.updateDevice(id, formData as DeviceUpdateInput);
+                await deviceApi.updateDevice(id, formData);
             } else {
                 await deviceApi.createDevice(formData);
             }
@@ -73,8 +73,8 @@ export const DeviceForm: React.FC = () => {
                         メーカー:
                         <input
                             type="text"
-                            name="manufacturer"
-                            value={formData.manufacturer}
+                            name="maker"
+                            value={formData.maker}
                             onChange={handleChange}
                             required
                         />

@@ -10,10 +10,20 @@
         "Items": [
             {
                 "Id": "device-mgmt-frontend-dynamodb-bucket",
-                "DomainName": "device-mgmt-frontend-dynamodb-bucket.s3.ap-northeast-1.amazonaws.com",
+                "DomainName": "device-mgmt-frontend-dynamodb-bucket.s3.amazonaws.com",
+                "OriginPath": "",
+                "CustomHeaders": {
+                    "Quantity": 0
+                },
                 "S3OriginConfig": {
                     "OriginAccessIdentity": ""
-                }
+                },
+                "ConnectionAttempts": 3,
+                "ConnectionTimeout": 10,
+                "OriginShield": {
+                    "Enabled": false
+                },
+                "OriginAccessControlId": "EHGQI6OMDY3HL"
             }
         ]
     },
@@ -54,9 +64,6 @@
             "Quantity": 0
         },
         "FieldLevelEncryptionId": "",
-        "GrpcConfig": {
-            "Enabled": false
-        },
         "ForwardedValues": {
             "QueryString": false,
             "Cookies": {
@@ -77,7 +84,21 @@
         "Quantity": 0
     },
     "CustomErrorResponses": {
-        "Quantity": 0
+        "Quantity": 2,
+        "Items": [
+            {
+                "ErrorCode": 403,
+                "ResponsePagePath": "/index.html",
+                "ResponseCode": "200",
+                "ErrorCachingMinTTL": 10
+            },
+            {
+                "ErrorCode": 404,
+                "ResponsePagePath": "/index.html",
+                "ResponseCode": "200",
+                "ErrorCachingMinTTL": 10
+            }
+        ]
     },
     "Logging": {
         "Enabled": false,
@@ -89,7 +110,6 @@
     "Enabled": true,
     "ViewerCertificate": {
         "CloudFrontDefaultCertificate": true,
-        "SSLSupportMethod": "vip",
         "MinimumProtocolVersion": "TLSv1",
         "CertificateSource": "cloudfront"
     },
@@ -101,7 +121,5 @@
     },
     "WebACLId": "",
     "HttpVersion": "http2",
-    "IsIPV6Enabled": true,
-    "ContinuousDeploymentPolicyId": "",
-    "Staging": false
+    "IsIPV6Enabled": true
 }

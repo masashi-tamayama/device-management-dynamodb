@@ -10,8 +10,8 @@ export const DeviceList: React.FC = () => {
     useEffect(() => {
         const fetchDevices = async () => {
             try {
-                const data = await deviceApi.getDevices();
-                setDevices(data);
+                const data = await deviceApi.getAllDevices();
+                setDevices(data.filter(device => device.id !== undefined));
             } catch (error) {
                 console.error('デバイス一覧の取得に失敗しました:', error);
             }
@@ -46,9 +46,9 @@ export const DeviceList: React.FC = () => {
                         <tr key={device.id}>
                             <td>{device.id}</td>
                             <td>{device.name}</td>
-                            <td>{device.manufacturer}</td>
+                            <td>{device.maker}</td>
                             <td>
-                                <button onClick={() => handleEdit(device.id)}>
+                                <button onClick={() => handleEdit(device.id as string)}>
                                     編集
                                 </button>
                             </td>
